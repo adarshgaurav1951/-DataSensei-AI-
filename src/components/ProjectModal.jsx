@@ -1,17 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Sparkles, 
-  CheckCircle2, 
-  Circle, 
-  Database, 
-  FileCode, 
-  Copy, 
-  Check, 
-  ExternalLink,
-  BookOpen,
-  Cpu
-} from 'lucide-react';
+import { X, Copy, Check, CheckCircle2, Circle, Database, FileCode, Sparkles } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function ProjectModal({ project, onClose, onLaunchAgent, completedSteps, onToggleStep }) {
@@ -28,10 +16,10 @@ export default function ProjectModal({ project, onClose, onLaunchAgent, complete
     onToggleStep(stepId);
     if (!completedSteps.includes(stepId)) {
       confetti({
-        particleCount: 40,
+        particleCount: 35,
         spread: 60,
         origin: { y: 0.8 },
-        colors: ['#00f5d4', '#8b5cf6', '#38bdf8']
+        colors: ['#D9532F', '#E8795A', '#1B1714']
       });
     }
   };
@@ -48,20 +36,19 @@ from sklearn.pipeline import Pipeline
 
 print("Loading dataset: ${project.datasetName} (${project.datasetSize})...")
 
-# 1. Step 1: Ingest & Inspect
+# Step 1: Ingest & Check Schema
 # df = pd.read_csv("data/${project.id}.csv")
 # print(df.info())
-# print(df.describe())
 
-# 2. Step 2: Exploratory Data Analysis & Handling Nulls
-# Step 3: Feature Engineering Pipeline
-# Step 4: Model Training & Cross-Validation
-# Step 5: Deliverable & Business Evaluation
+# Step 2: Clean Missing Values & Outliers
+# Step 3: Feature Pipeline (ColumnTransformer)
+# Step 4: Model Training & PR-AUC Evaluation
+# Step 5: Deliverable & Business Report
 
 print("Ready to develop with DataSensei AI Teaching Agent guidance!")
 `;
 
-  const copyCodeToClipboard = () => {
+  const copyCode = () => {
     navigator.clipboard.writeText(starterPythonCode);
     setCopiedCode(true);
     setTimeout(() => setCopiedCode(false), 2000);
@@ -74,46 +61,50 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
       left: 0,
       right: 0,
       bottom: 0,
-      zIndex: 50,
-      background: 'rgba(3, 6, 12, 0.85)',
-      backdropFilter: 'blur(12px)',
+      zIndex: 60,
+      background: 'rgba(27, 23, 20, 0.65)',
+      backdropFilter: 'blur(8px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '24px'
+      padding: '20px'
     }}>
       <div 
-        className="glass-panel"
+        className="editorial-card"
         style={{
           width: '100%',
-          maxWidth: '920px',
-          maxHeight: '90vh',
+          maxWidth: '860px',
+          maxHeight: '88vh',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          background: '#090e1c',
-          border: '1px solid rgba(0, 245, 212, 0.25)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.7)'
+          padding: 0,
+          background: '#FAF6F0',
+          border: '1px solid #D6C8BA'
         }}
       >
-        {/* Modal Header */}
+        {/* Header */}
         <div style={{
-          padding: '22px 28px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          padding: '24px 28px',
+          borderBottom: '1px solid #ECE4DC',
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
-          background: 'rgba(11, 16, 32, 0.8)'
+          background: '#FFFFFF'
         }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <span className="badge badge-cyan">{project.domain}</span>
-              <span className="badge badge-purple">{project.difficulty}</span>
-              <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                Est. Completion: <strong>{project.estHours}</strong>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <span className="pill-tag" style={{ background: '#FBECE7', color: '#D9532F', borderColor: '#D9532F', fontWeight: 600 }}>
+                {project.domain}
+              </span>
+              <span className="pill-tag">
+                {project.difficulty}
+              </span>
+              <span style={{ fontSize: '0.8rem', color: '#7D7368' }}>
+                Est: {project.estHours}
               </span>
             </div>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff' }}>
+            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem', color: '#1B1714' }}>
               {project.title}
             </h2>
           </div>
@@ -121,146 +112,67 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
           <button
             onClick={onClose}
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: '#F4ECE1',
+              border: 'none',
               borderRadius: '8px',
-              padding: '6px',
-              color: '#94a3b8',
+              padding: '8px',
+              color: '#3B332B',
               cursor: 'pointer'
             }}
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
         {/* Progress Bar */}
-        <div style={{ background: 'rgba(15, 23, 42, 0.9)', padding: '12px 28px', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
+        <div style={{ background: '#FFFFFF', padding: '10px 28px', borderBottom: '1px solid #ECE4DC' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '6px' }}>
-            <span style={{ color: '#94a3b8' }}>Project Milestone Progress</span>
-            <span style={{ color: '#00f5d4', fontWeight: 700 }}>{progressPercent}% Complete ({doneCount}/{project.steps.length} steps)</span>
+            <span style={{ color: '#7D7368' }}>Steps Completed</span>
+            <span style={{ color: '#D9532F', fontWeight: 700 }}>{progressPercent}% ({doneCount}/{project.steps.length})</span>
           </div>
-          <div style={{ height: '6px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden' }}>
+          <div style={{ height: '6px', background: '#F0E8DF', borderRadius: '999px', overflow: 'hidden' }}>
             <div style={{
               height: '100%',
               width: `${progressPercent}%`,
-              background: 'linear-gradient(90deg, #00f5d4, #8b5cf6)',
+              background: '#D9532F',
               transition: 'width 0.4s ease'
             }} />
           </div>
         </div>
 
-        {/* Sub-Navigation Tabs */}
-        <div style={{
-          display: 'flex',
-          gap: '12px',
-          padding: '12px 28px',
-          background: 'rgba(6, 9, 18, 0.6)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.06)'
-        }}>
-          <button
-            onClick={() => setActiveTab('steps')}
-            style={{
-              background: activeTab === 'steps' ? 'rgba(0, 245, 212, 0.15)' : 'transparent',
-              color: activeTab === 'steps' ? '#00f5d4' : '#94a3b8',
-              border: activeTab === 'steps' ? '1px solid rgba(0, 245, 212, 0.3)' : '1px solid transparent',
-              padding: '6px 14px',
-              borderRadius: '6px',
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              cursor: 'pointer'
-            }}
-          >
-            Milestone Checklist ({project.steps.length})
-          </button>
-
-          <button
-            onClick={() => setActiveTab('dataset')}
-            style={{
-              background: activeTab === 'dataset' ? 'rgba(0, 245, 212, 0.15)' : 'transparent',
-              color: activeTab === 'dataset' ? '#00f5d4' : '#94a3b8',
-              border: activeTab === 'dataset' ? '1px solid rgba(0, 245, 212, 0.3)' : '1px solid transparent',
-              padding: '6px 14px',
-              borderRadius: '6px',
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <Database size={14} /> Dataset Preview & Schema
-          </button>
-
-          <button
-            onClick={() => setActiveTab('starter-code')}
-            style={{
-              background: activeTab === 'starter-code' ? 'rgba(0, 245, 212, 0.15)' : 'transparent',
-              color: activeTab === 'starter-code' ? '#00f5d4' : '#94a3b8',
-              border: activeTab === 'starter-code' ? '1px solid rgba(0, 245, 212, 0.3)' : '1px solid transparent',
-              padding: '6px 14px',
-              borderRadius: '6px',
-              fontSize: '0.84rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <FileCode size={14} /> Starter Python Code
-          </button>
+        {/* Tab Buttons */}
+        <div style={{ display: 'flex', gap: '8px', padding: '12px 28px', background: '#F4ECE1', borderBottom: '1px solid #ECE4DC' }}>
+          {['steps', 'dataset', 'starter-code'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                padding: '6px 14px',
+                borderRadius: '6px',
+                fontSize: '0.84rem',
+                fontWeight: activeTab === tab ? 700 : 500,
+                background: activeTab === tab ? '#FFFFFF' : 'transparent',
+                color: activeTab === tab ? '#D9532F' : '#6B6258',
+                border: activeTab === tab ? '1px solid #D9CEBF' : '1px solid transparent',
+                cursor: 'pointer'
+              }}
+            >
+              {tab === 'steps' ? 'Milestone Steps' : tab === 'dataset' ? 'Dataset Preview' : 'Python Starter Code'}
+            </button>
+          ))}
         </div>
 
-        {/* Modal Body */}
+        {/* Body */}
         <div style={{ padding: '24px 28px', overflowY: 'auto', flex: 1 }}>
           {activeTab === 'steps' && (
             <div>
-              <div style={{ marginBottom: '20px' }}>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#e2e8f0', marginBottom: '6px' }}>
-                  Business Problem & Overview
-                </h4>
-                <p style={{ fontSize: '0.88rem', color: '#94a3b8', lineHeight: '1.6' }}>
-                  {project.summary}
-                </p>
-              </div>
+              <p style={{ fontSize: '0.92rem', color: '#4A4137', marginBottom: '20px', lineHeight: '1.6' }}>
+                {project.summary}
+              </p>
 
-              {/* Skills and Tools applied */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#38bdf8', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <BookOpen size={14} /> Core 16 Skills In Play:
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {project.skills.map(s => (
-                      <span key={s} style={{ fontSize: '0.74rem', background: 'rgba(56, 189, 248, 0.1)', color: '#7dd3fc', padding: '3px 8px', borderRadius: '6px' }}>
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div style={{ background: 'rgba(255, 255, 255, 0.02)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#a78bfa', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Cpu size={14} /> 15 Industry Tools In Play:
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                    {project.tools.map(t => (
-                      <span key={t} style={{ fontSize: '0.74rem', background: 'rgba(167, 139, 250, 0.1)', color: '#c084fc', padding: '3px 8px', borderRadius: '6px' }}>
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Steps list */}
-              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#e2e8f0', marginBottom: '12px' }}>
-                Implementation Steps (Click to complete):
-              </h4>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {project.steps.map((step, index) => {
-                  const stepId = `${project.id}-step-${index}`;
+                {project.steps.map((step, idx) => {
+                  const stepId = `${project.id}-step-${idx}`;
                   const isDone = completedSteps.includes(stepId);
                   return (
                     <div
@@ -272,20 +184,20 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
                         gap: '12px',
                         padding: '14px 16px',
                         borderRadius: '10px',
-                        background: isDone ? 'rgba(16, 185, 129, 0.08)' : 'rgba(15, 23, 42, 0.5)',
-                        border: isDone ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255, 255, 255, 0.06)',
+                        background: isDone ? '#FDFBF7' : '#FFFFFF',
+                        border: isDone ? '1px solid #D9532F' : '1px solid #ECE4DC',
                         cursor: 'pointer',
-                        transition: 'all 0.2s ease'
+                        transition: 'all 0.15s ease'
                       }}
                     >
-                      <div style={{ marginTop: '2px', color: isDone ? '#10b981' : '#64748b' }}>
+                      <div style={{ marginTop: '2px', color: isDone ? '#D9532F' : '#A3978B' }}>
                         {isDone ? <CheckCircle2 size={18} /> : <Circle size={18} />}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: isDone ? '#34d399' : '#00f5d4', marginBottom: '2px' }}>
-                          Step {index + 1}
+                        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: isDone ? '#D9532F' : '#1B1714', marginBottom: '2px' }}>
+                          Step {idx + 1}
                         </div>
-                        <div style={{ fontSize: '0.88rem', color: isDone ? '#94a3b8' : '#e2e8f0', textDecoration: isDone ? 'line-through' : 'none' }}>
+                        <div style={{ fontSize: '0.88rem', color: isDone ? '#7D7368' : '#2A231C', textDecoration: isDone ? 'line-through' : 'none' }}>
                           {step}
                         </div>
                       </div>
@@ -298,107 +210,78 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
 
           {activeTab === 'dataset' && (
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-                <div>
-                  <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#fff' }}>
-                    {project.datasetName}
-                  </h4>
-                  <div style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
-                    {project.datasetSize}
-                  </div>
-                </div>
-
-                <div className="badge badge-emerald">
-                  <span>Simulated Live Stream • Cleaned</span>
-                </div>
+              <div style={{ marginBottom: '14px' }}>
+                <strong style={{ fontSize: '1rem', color: '#1B1714' }}>{project.datasetName}</strong>
+                <span style={{ fontSize: '0.84rem', color: '#7D7368', marginLeft: '8px' }}>({project.datasetSize})</span>
               </div>
 
-              {/* Sample Table */}
-              <div style={{ overflowX: 'auto', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.08)', marginBottom: '20px' }}>
+              <div style={{ overflowX: 'auto', borderRadius: '8px', border: '1px solid #ECE4DC', background: '#FFFFFF' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem', textAlign: 'left' }}>
                   <thead>
-                    <tr style={{ background: 'rgba(15, 23, 42, 0.9)', color: '#38bdf8' }}>
-                      {Object.keys(project.sampleData[0] || {}).map(key => (
-                        <th key={key} style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                          {key}
-                        </th>
+                    <tr style={{ background: '#F4ECE1', color: '#1B1714' }}>
+                      {Object.keys(project.sampleData[0] || {}).map(k => (
+                        <th key={k} style={{ padding: '10px 12px', borderBottom: '1px solid #ECE4DC' }}>{k}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
-                    {project.sampleData.map((row, idx) => (
-                      <tr key={idx} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)', background: idx % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.01)' }}>
-                        {Object.values(row).map((val, cIdx) => (
-                          <td key={cIdx} style={{ padding: '10px 14px', color: '#cbd5e1' }}>
-                            {String(val)}
-                          </td>
+                    {project.sampleData.map((row, rIdx) => (
+                      <tr key={rIdx} style={{ borderBottom: '1px solid #F0E8DF' }}>
+                        {Object.values(row).map((v, cIdx) => (
+                          <td key={cIdx} style={{ padding: '10px 12px', color: '#4A4137' }}>{String(v)}</td>
                         ))}
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-
-              {/* Stats badges */}
-              <h5 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#e2e8f0', marginBottom: '8px' }}>
-                Dataset Industry Metrics:
-              </h5>
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                {Object.entries(project.stats || {}).map(([k, v]) => (
-                  <div key={k} style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '8px 14px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)' }}>
-                    <span style={{ fontSize: '0.74rem', color: '#94a3b8', textTransform: 'capitalize' }}>{k.replace(/([A-Z])/g, ' $1')}: </span>
-                    <strong style={{ fontSize: '0.85rem', color: '#00f5d4' }}>{v}</strong>
-                  </div>
-                ))}
-              </div>
             </div>
           )}
 
           {activeTab === 'starter-code' && (
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                <p style={{ fontSize: '0.85rem', color: '#94a3b8' }}>
-                  Use this boilerplate code to kick off your local Jupyter Notebook or Google Colab session:
-                </p>
-                <button
-                  onClick={copyCodeToClipboard}
-                  className="btn-secondary"
-                  style={{ fontSize: '0.8rem', padding: '6px 12px' }}
-                >
-                  {copiedCode ? <Check size={14} color="#10b981" /> : <Copy size={14} />}
-                  <span>{copiedCode ? 'Copied!' : 'Copy Code'}</span>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+                <button onClick={copyCode} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
+                  {copiedCode ? <Check size={14} color="#D9532F" /> : <Copy size={14} />}
+                  <span>{copiedCode ? 'Copied' : 'Copy'}</span>
                 </button>
               </div>
-
-              <pre className="code-snippet" style={{ maxHeight: '320px', overflowY: 'auto' }}>
+              <pre style={{
+                background: '#1B1714',
+                color: '#FAF6F0',
+                padding: '16px',
+                borderRadius: '8px',
+                fontSize: '0.82rem',
+                fontFamily: 'var(--font-mono)',
+                overflowX: 'auto'
+              }}>
                 <code>{starterPythonCode}</code>
               </pre>
             </div>
           )}
         </div>
 
-        {/* Modal Footer */}
+        {/* Footer */}
         <div style={{
           padding: '16px 28px',
-          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          borderTop: '1px solid #ECE4DC',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(11, 16, 32, 0.8)'
+          background: '#FFFFFF'
         }}>
-          <button onClick={onClose} className="btn-secondary">
-            Close Lab
+          <button onClick={onClose} className="btn-outline">
+            Close
           </button>
-
           <button
             onClick={() => {
               onClose();
               onLaunchAgent(project);
             }}
-            className="btn-primary"
+            className="btn-terracotta"
           >
             <Sparkles size={16} />
-            <span>Launch AI Teaching Agent for this Project</span>
+            <span>Ask Teaching Agent for Custom Plan</span>
           </button>
         </div>
       </div>

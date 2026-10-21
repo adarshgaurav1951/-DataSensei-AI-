@@ -8,138 +8,104 @@ export default function Network3DCanvas() {
     const currentMount = mountRef.current;
     if (!currentMount) return;
 
-    // Scene, Camera, Renderer
+    const width = currentMount.clientWidth || 450;
+    const height = currentMount.clientHeight || 450;
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 180;
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 210;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     currentMount.appendChild(renderer.domElement);
 
-    // Particle nodes: Data Science Network
-    const particleCount = 120;
+    // Warm terracotta colors matching the user screenshot
+    const sphereRadius = 72;
+    const nodeCount = 95;
     const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    const velocities = [];
+    const positions = new Float32Array(nodeCount * 3);
 
-    const color1 = new THREE.Color('#00f5d4'); // Cyan
-    const color2 = new THREE.Color('#8b5cf6'); // Purple
-    const color3 = new THREE.Color('#38bdf8'); // Sky
+    // Fibonacci sphere distribution for uniform elegant spherical mesh
+    const phi = Math.PI * (3 - Math.sqrt(5)); // Golden ratio angle
 
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 350;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 200;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 150;
+    for (let i = 0; i < nodeCount; i++) {
+      const y = 1 - (i / (nodeCount - 1)) * 2; // y goes from 1 to -1
+      const radiusAtY = Math.sqrt(1 - y * y);
+      const theta = phi * i;
 
-      velocities.push({
-        x: (Math.random() - 0.5) * 0.25,
-        y: (Math.random() - 0.5) * 0.25,
-        z: (Math.random() - 0.5) * 0.15
-      });
+      const x = Math.cos(theta) * radiusAtY;
+      const z = Math.sin(theta) * radiusAtY;
 
-      const chosenColor = i % 3 === 0 ? color1 : i % 3 === 1 ? color2 : color3;
-      colors[i * 3] = chosenColor.r;
-      colors[i * 3 + 1] = chosenColor.g;
-      colors[i * 3 + 2] = chosenColor.b;
+      // Small jitter for organic constellation feeling
+      const jitter = 1 + (Math.random() - 0.5) * 0.08;
+
+      positions[i * 3] = x * sphereRadius * jitter;
+      positions[i * 3 + 1] = y * sphereRadius * jitter;
+      positions[i * 3 + 2] = z * sphereRadius * jitter;
     }
 
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
+    // Terracotta Node Points
     const pMaterial = new THREE.PointsMaterial({
-      size: 3.5,
-      vertexColors: true,
+      color: 0xD9532F,
+      size: 4.5,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.95
     });
+    const pointsMesh = new THREE.Points(geometry, pMaterial);
+    scene.add(pointsMesh);
 
-    const particleSystem = new THREE.Points(geometry, pMaterial);
-    scene.add(particleSystem);
-
-    // Dynamic Connections Lines
+    // Connection lines between nearby spherical points
     const linesMaterial = new THREE.LineBasicMaterial({
-      color: 0x8b5cf6,
+      color: 0xE8795A,
       transparent: true,
-      opacity: 0.15
+      opacity: 0.35,
+      linewidth: 1
     });
 
-    let linesMesh;
+    const linePositions = [];
+    for (let i = 0; i < nodeCount; i++) {
+      for (let j = i + 1; j < nodeCount; j++) {
+        const dx = positions[i * 3] - positions[j * 3];
+        const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+        const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
-    // Mouse interactive shift
+        // Connect if close enough to form spherical lattice
+        if (dist < 38) {
+          linePositions.push(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+          linePositions.push(positions[j * 3], positions[j * 3 + 1], positions[j * 3 + 2]);
+        }
+      }
+    }
+
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+    const linesMesh = new THREE.LineSegments(lineGeo, linesMaterial);
+    scene.add(linesMesh);
+
+    // Mouse gentle interaction
     let mouseX = 0;
     let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-
-    const handleMouseMove = (event) => {
-      mouseX = (event.clientX - window.innerWidth / 2) * 0.05;
-      mouseY = (event.clientY - window.innerHeight / 2) * 0.05;
+    const handleMouseMove = (e) => {
+      const rect = currentMount.getBoundingClientRect();
+      mouseX = (e.clientX - rect.left - width / 2) * 0.001;
+      mouseY = (e.clientY - rect.top - height / 2) * 0.001;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Animation Loop
-    let animationFrameId;
+    let frameId;
     const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
+      frameId = requestAnimationFrame(animate);
 
-      targetX += (mouseX - targetX) * 0.05;
-      targetY += (mouseY - targetY) * 0.05;
+      pointsMesh.rotation.y += 0.003 + mouseX * 0.05;
+      pointsMesh.rotation.x += 0.0015 + mouseY * 0.05;
 
-      camera.position.x = targetX;
-      camera.position.y = -targetY;
-      camera.lookAt(scene.position);
-
-      const pos = geometry.attributes.position.array;
-      const linePositions = [];
-
-      for (let i = 0; i < particleCount; i++) {
-        pos[i * 3] += velocities[i].x;
-        pos[i * 3 + 1] += velocities[i].y;
-        pos[i * 3 + 2] += velocities[i].z;
-
-        // Bounce within bounding box
-        if (Math.abs(pos[i * 3]) > 180) velocities[i].x *= -1;
-        if (Math.abs(pos[i * 3 + 1]) > 110) velocities[i].y *= -1;
-        if (Math.abs(pos[i * 3 + 2]) > 90) velocities[i].z *= -1;
-
-        // Connect nearby nodes
-        for (let j = i + 1; j < particleCount; j++) {
-          const dx = pos[i * 3] - pos[j * 3];
-          const dy = pos[i * 3 + 1] - pos[j * 3 + 1];
-          const dz = pos[i * 3 + 2] - pos[j * 3 + 2];
-          const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-          if (dist < 45) {
-            linePositions.push(pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]);
-            linePositions.push(pos[j * 3], pos[j * 3 + 1], pos[j * 3 + 2]);
-          }
-        }
-      }
-
-      geometry.attributes.position.needsUpdate = true;
-
-      // Update lines
-      if (linesMesh) scene.remove(linesMesh);
-      if (linePositions.length > 0) {
-        const lineGeo = new THREE.BufferGeometry();
-        lineGeo.setAttribute(
-          'position',
-          new THREE.Float32BufferAttribute(linePositions, 3)
-        );
-        linesMesh = new THREE.LineSegments(lineGeo, linesMaterial);
-        scene.add(linesMesh);
-      }
-
-      particleSystem.rotation.y += 0.0008;
+      linesMesh.rotation.y = pointsMesh.rotation.y;
+      linesMesh.rotation.x = pointsMesh.rotation.x;
 
       renderer.render(scene, camera);
     };
@@ -147,9 +113,12 @@ export default function Network3DCanvas() {
     animate();
 
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      if (!currentMount) return;
+      const newWidth = currentMount.clientWidth || 450;
+      const newHeight = currentMount.clientHeight || 450;
+      camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(newWidth, newHeight);
     };
 
     window.addEventListener('resize', handleResize);
@@ -157,11 +126,12 @@ export default function Network3DCanvas() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
+      cancelAnimationFrame(frameId);
       if (currentMount && renderer.domElement) {
         currentMount.removeChild(renderer.domElement);
       }
       geometry.dispose();
+      lineGeo.dispose();
       pMaterial.dispose();
       linesMaterial.dispose();
       renderer.dispose();
@@ -172,14 +142,13 @@ export default function Network3DCanvas() {
     <div
       ref={mountRef}
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
         width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        zIndex: 0,
-        opacity: 0.65
+        maxWidth: '460px',
+        height: '420px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: '0 auto'
       }}
     />
   );
