@@ -340,7 +340,7 @@ export default function App() {
                 The Socratic AI Teaching Agent
               </h2>
               <p style={{ fontSize: '0.98rem', color: '#94a3b8', lineHeight: '1.6' }}>
-                DataForge’s agent acts as your 1-on-1 mentor across 6 specialized roles. It constructs customized schedules, guides you with 3-tier hints rather than giving answers away, and scans your code for data leakage.
+                DataSensei AI’s agent acts as your 1-on-1 mentor across 6 specialized roles. It constructs customized schedules, guides you with 3-tier hints rather than giving answers away, and scans your code for data leakage.
               </p>
             </div>
 
@@ -490,7 +490,7 @@ export default function App() {
           color: '#64748b'
         }}>
           <div>
-            <strong style={{ color: '#fff' }}>DataForge</strong> — AI Teaching Agent & Data Science Learning Platform
+            <strong style={{ color: '#fff' }}>DataSensei AI</strong> — Adaptive Data Science Teaching Agent Platform
           </div>
 
           <div style={{ display: 'flex', gap: '20px' }}>

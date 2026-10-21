@@ -1,9 +1,9 @@
 # Product Requirement Document (PRD)
-# Project: DataForge – AI Teaching Agent & Data Science Learning Platform
+# Project: DataSensei AI – Adaptive Data Science Teaching Agent Platform
 
 **Document Version:** 1.0.0  
 **Status:** Approved / In Progress  
-**Author / Team:** DataForge Core Engineering & Product Team  
+**Author / Team:** DataSensei AI Core Engineering & Product Team  
 **Last Updated:** October 2026  
 **Target Release:** v1 (MVP) -> v2 (Intelligent Agent) -> v3 (Interactive Studio)
 
@@ -18,7 +18,7 @@ Learning Data Science is notoriously fragmented. Aspiring learners, students, an
 3. **Absence of Personalized 1-on-1 Mentorship:** When learners get stuck on data cleaning, debugging pandas pipelines, or choosing evaluation metrics, they either rely on general-purpose chat bots that give away the full code without teaching, or give up entirely.
 
 ### 1.2 Product Vision
-**DataForge** is an intelligent, problem-first Data Science learning platform anchored by an adaptive **Teaching AI Agent**. Instead of generic lectures, learners select real-world industrial business problems (churn, fraud, forecasting, RLS dashboards), explore datasets, understand prerequisite skills and tooling, and collaborate with an AI mentor that creates customized learning plans, conducts code reviews, provides Socratic debugging, and guides them from raw data to production MLOps.
+**DataSensei AI** is an intelligent, problem-first Data Science learning platform anchored by an adaptive **Teaching AI Agent**. Instead of generic lectures, learners select real-world industrial business problems (churn, fraud, forecasting, RLS dashboards), explore datasets, understand prerequisite skills and tooling, and collaborate with an AI mentor that creates customized learning plans, conducts code reviews, provides Socratic debugging, and guides them from raw data to production MLOps.
 
 ### 1.3 Value Proposition
 - **Problem-Driven Learning:** Choose from 12 flagship industry projects spanning 8 domains (BI, Predictive Modeling, A/B Testing, NLP, Computer Vision, Forecasting, Data Engineering, MLOps).
@@ -31,7 +31,7 @@ Learning Data Science is notoriously fragmented. Aspiring learners, students, an
 
 ### 2.1 Personas
 
-| Persona | Background & Goals | Pain Points | Desired Outcome from DataForge |
+| Persona | Background & Goals | Pain Points | Desired Outcome from DataSensei AI |
 |---|---|---|---|
 | **P1: "The Aspiring Career Transitioner"** | Junior software engineer or business analyst transitioning into Data Science / ML. | Knows Python or SQL, but struggles with statistical rigor, ML project lifecycle, and building an industry-grade portfolio. | Structured, project-first roadmap that connects their existing strengths to missing ML/Ops skills. |
 | **P2: "The STEM Student"** | Undergraduate / Master's student in CS, Math, or Engineering. | Understands theoretical math and algorithms, but lacks experience with messy, real-world data pipelines and business metrics. | Hands-on experience with real datasets, data cleaning, and production deployment scenarios. |
@@ -41,7 +41,7 @@ Learning Data Science is notoriously fragmented. Aspiring learners, students, an
 
 ```mermaid
 journey
-    title Student Learning Journey on DataForge
+    title Student Learning Journey on DataSensei AI
     section Discovery
       Browse 12 Industry Projects: 5: Student
       Filter by Domain / Tool / Skill: 4: Student
@@ -134,7 +134,7 @@ graph TB
 
 ## 5. Domain Knowledge Matrix: Skills, Tools & Industry Tracks
 
-DataForge is grounded in a taxonomy of **16 Core Skills**, **15 Industry Tools**, **8 Industry Tracks**, and **12 Flagship Projects**.
+DataSensei AI is grounded in a taxonomy of **16 Core Skills**, **15 Industry Tools**, **8 Industry Tracks**, and **12 Flagship Projects**.
 
 ### 5.1 The 16 Core Skills
 
@@ -211,7 +211,7 @@ mindmap
 
 ## 6. The Teaching AI Agent Specification (Core Engine)
 
-The Teaching AI Agent is the intellectual heart of DataForge. Unlike generic chatbots, it operates under an explicit pedagogical framework.
+The Teaching AI Agent is the intellectual heart of DataSensei AI. Unlike generic chatbots, it operates under an explicit pedagogical framework.
 
 ### 6.1 The 6 Agent Roles
 
@@ -246,7 +246,7 @@ The Teaching AI Agent is the intellectual heart of DataForge. Unlike generic cha
 ### 6.2 Agent Prompting & Pedagogical System Instructions
 
 ```markdown
-You are DataForge Mentor, an expert Data Science and Machine Learning teaching agent.
+You are DataSensei Mentor, an expert Data Science and Machine Learning teaching agent.
 Your mission is to guide learners to achieve deep mastery through project-based learning.
 
 PEDAGOGICAL PRINCIPLES:
@@ -504,7 +504,7 @@ erDiagram
 
 ## 12. Acceptance Criteria & Sign-off Checklist
 
-To deem the Teaching AI Agent & DataForge platform ready for production release, the following criteria must be satisfied:
+To deem the Teaching AI Agent & DataSensei AI platform ready for production release, the following criteria must be satisfied:
 
 - [ ] **Catalog Completeness:** All 12 flagship projects accurately cross-reference their specific subsets of the 16 skills and 15 tools.
 - [ ] **Agent Responsiveness:** The agent chat responds with streaming markdown and code blocks with TTFT < 800ms.

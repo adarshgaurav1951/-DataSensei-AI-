@@ -63,7 +63,7 @@ export default function DeploymentModal({ isOpen, onClose }) {
               </span>
             </div>
             <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff' }}>
-              Deploy DataForge AI Learning Platform
+              Deploy DataSensei AI Learning Platform
             </h2>
           </div>
 

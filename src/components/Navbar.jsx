@@ -54,7 +54,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAgent, onOpenDep
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.28rem', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>
-                DataForge
+                DataSensei<span style={{ color: '#00f5d4' }}>.ai</span>
               </span>
               <span className="badge badge-cyan" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
                 AI MENTOR
@@ -133,7 +133,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenAgent, onOpenDep
             onClick={onOpenDeploy}
             className="btn-secondary"
             style={{ padding: '8px 14px', fontSize: '0.85rem' }}
-            title="Deploy DataForge & View PRD"
+            title="Deploy DataSensei AI & View PRD"
           >
             <Rocket size={16} color="#00f5d4" />
             <span>Deploy</span>

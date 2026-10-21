@@ -36,7 +36,7 @@ export default function ProjectModal({ project, onClose, onLaunchAgent, complete
     }
   };
 
-  const starterPythonCode = `# DataForge Project: ${project.title}
+  const starterPythonCode = `# DataSensei AI Project: ${project.title}
 # Domain: ${project.domain} | Difficulty: ${project.difficulty}
 
 import numpy as np
@@ -58,7 +58,7 @@ print("Loading dataset: ${project.datasetName} (${project.datasetSize})...")
 # Step 4: Model Training & Cross-Validation
 # Step 5: Deliverable & Business Evaluation
 
-print("Ready to develop with DataForge AI Teaching Agent guidance!")
+print("Ready to develop with DataSensei AI Teaching Agent guidance!")
 `;
 
   const copyCodeToClipboard = () => {

@@ -1,4 +1,4 @@
-# DataForge – AI Teaching Agent & Data Science Learning Platform
+# DataSensei AI – Adaptive Data Science Teaching Agent Platform
 
 > A problem-first Data Science learning platform with an adaptive Socratic AI Teaching Agent, real-world project datasets, and skill scaffolding.
 
