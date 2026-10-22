@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Copy, Check, CheckCircle2, Circle, Database, FileCode, Sparkles } from 'lucide-react';
+import { X, Copy, Check, CheckCircle2, Circle, Database, FileCode, Sparkles, Cpu, Layers } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function ProjectModal({ project, onClose, onLaunchAgent, completedSteps, onToggleStep }) {
@@ -19,33 +19,35 @@ export default function ProjectModal({ project, onClose, onLaunchAgent, complete
         particleCount: 35,
         spread: 60,
         origin: { y: 0.8 },
-        colors: ['#D9532F', '#E8795A', '#1B1714']
+        colors: ['#00F0FF', '#9D4EDD', '#00F5A0']
       });
     }
   };
 
-  const starterPythonCode = `# DataSensei AI Project: ${project.title}
+  const starterPythonCode = `# DataSensei AI Benchmark: ${project.title}
 # Domain: ${project.domain} | Difficulty: ${project.difficulty}
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
+from sklearn.model_selection import StratifiedKFold
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import RobustScaler, OneHotEncoder
+from xgboost import XGBClassifier
 
-print("Loading dataset: ${project.datasetName} (${project.datasetSize})...")
+print("Ingesting dataset: ${project.datasetName} (${project.datasetSize})...")
 
 # Step 1: Ingest & Check Schema
 # df = pd.read_csv("data/${project.id}.csv")
 # print(df.info())
 
-# Step 2: Clean Missing Values & Outliers
+# Step 2: Clean Missing Values & Audit Leakage
 # Step 3: Feature Pipeline (ColumnTransformer)
 # Step 4: Model Training & PR-AUC Evaluation
-# Step 5: Deliverable & Business Report
+# Step 5: Executive Business Lift Delivery
 
-print("Ready to develop with DataSensei AI Teaching Agent guidance!")
+print("Ready to develop with DataSensei Voice Agent guidance!")
 `;
 
   const copyCode = () => {
@@ -57,54 +59,51 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
   return (
     <div style={{
       position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      zIndex: 60,
-      background: 'rgba(27, 23, 20, 0.65)',
-      backdropFilter: 'blur(8px)',
+      inset: 0,
+      zIndex: 80,
+      background: 'rgba(5, 8, 16, 0.88)',
+      backdropFilter: 'blur(18px)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       padding: '20px'
     }}>
       <div 
-        className="editorial-card"
+        className="cyber-card"
         style={{
           width: '100%',
-          maxWidth: '860px',
+          maxWidth: '880px',
           maxHeight: '88vh',
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
           padding: 0,
-          background: '#FAF6F0',
-          border: '1px solid #D6C8BA'
+          background: '#0B0E1B',
+          border: '1px solid rgba(0, 240, 255, 0.25)'
         }}
       >
         {/* Header */}
         <div style={{
-          padding: '24px 28px',
-          borderBottom: '1px solid #ECE4DC',
+          padding: '22px 28px',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
-          background: '#FFFFFF'
+          background: 'rgba(14, 18, 34, 0.95)'
         }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-              <span className="pill-tag" style={{ background: '#FBECE7', color: '#D9532F', borderColor: '#D9532F', fontWeight: 600 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <span className="pill-tag" style={{ background: 'rgba(0, 240, 255, 0.12)', color: 'var(--neon-cyan)', borderColor: 'var(--neon-cyan)', fontWeight: 600 }}>
                 {project.domain}
               </span>
               <span className="pill-tag">
                 {project.difficulty}
               </span>
-              <span style={{ fontSize: '0.8rem', color: '#7D7368' }}>
-                Est: {project.estHours}
+              <span style={{ fontSize: '0.8rem', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>
+                EST: {project.estHours}
               </span>
             </div>
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.6rem', color: '#1B1714' }}>
+            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#FFFFFF' }}>
               {project.title}
             </h2>
           </div>
@@ -112,11 +111,11 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
           <button
             onClick={onClose}
             style={{
-              background: '#F4ECE1',
-              border: 'none',
+              background: 'rgba(255, 255, 255, 0.06)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
               borderRadius: '8px',
               padding: '8px',
-              color: '#3B332B',
+              color: '#94A3B8',
               cursor: 'pointer'
             }}
           >
@@ -125,35 +124,38 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
         </div>
 
         {/* Progress Bar */}
-        <div style={{ background: '#FFFFFF', padding: '10px 28px', borderBottom: '1px solid #ECE4DC' }}>
+        <div style={{ background: 'rgba(10, 14, 26, 0.8)', padding: '12px 28px', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.82rem', marginBottom: '6px' }}>
-            <span style={{ color: '#7D7368' }}>Steps Completed</span>
-            <span style={{ color: '#D9532F', fontWeight: 700 }}>{progressPercent}% ({doneCount}/{project.steps.length})</span>
+            <span style={{ color: '#94A3B8' }}>Milestones Verified:</span>
+            <span style={{ color: 'var(--neon-cyan)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+              {progressPercent}% ({doneCount}/{project.steps.length})
+            </span>
           </div>
-          <div style={{ height: '6px', background: '#F0E8DF', borderRadius: '999px', overflow: 'hidden' }}>
+          <div style={{ height: '6px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '999px', overflow: 'hidden' }}>
             <div style={{
               height: '100%',
               width: `${progressPercent}%`,
-              background: '#D9532F',
+              background: 'linear-gradient(90deg, var(--neon-cyan), var(--neon-emerald))',
+              boxShadow: '0 0 10px var(--neon-cyan)',
               transition: 'width 0.4s ease'
             }} />
           </div>
         </div>
 
         {/* Tab Buttons */}
-        <div style={{ display: 'flex', gap: '8px', padding: '12px 28px', background: '#F4ECE1', borderBottom: '1px solid #ECE4DC' }}>
+        <div style={{ display: 'flex', gap: '8px', padding: '12px 28px', background: 'rgba(14, 18, 32, 0.6)', borderBottom: '1px solid rgba(255, 255, 255, 0.06)' }}>
           {['steps', 'dataset', 'starter-code'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               style={{
-                padding: '6px 14px',
-                borderRadius: '6px',
+                padding: '7px 16px',
+                borderRadius: '8px',
                 fontSize: '0.84rem',
                 fontWeight: activeTab === tab ? 700 : 500,
-                background: activeTab === tab ? '#FFFFFF' : 'transparent',
-                color: activeTab === tab ? '#D9532F' : '#6B6258',
-                border: activeTab === tab ? '1px solid #D9CEBF' : '1px solid transparent',
+                background: activeTab === tab ? 'rgba(0, 240, 255, 0.15)' : 'transparent',
+                color: activeTab === tab ? 'var(--neon-cyan)' : '#94A3B8',
+                border: activeTab === tab ? '1px solid var(--neon-cyan)' : '1px solid transparent',
                 cursor: 'pointer'
               }}
             >
@@ -166,7 +168,7 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
         <div style={{ padding: '24px 28px', overflowY: 'auto', flex: 1 }}>
           {activeTab === 'steps' && (
             <div>
-              <p style={{ fontSize: '0.92rem', color: '#4A4137', marginBottom: '20px', lineHeight: '1.6' }}>
+              <p style={{ fontSize: '0.92rem', color: '#CBD5E1', marginBottom: '20px', lineHeight: '1.6' }}>
                 {project.summary}
               </p>
 
@@ -183,21 +185,21 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
                         alignItems: 'flex-start',
                         gap: '12px',
                         padding: '14px 16px',
-                        borderRadius: '10px',
-                        background: isDone ? '#FDFBF7' : '#FFFFFF',
-                        border: isDone ? '1px solid #D9532F' : '1px solid #ECE4DC',
+                        borderRadius: '12px',
+                        background: isDone ? 'rgba(0, 245, 160, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+                        border: isDone ? '1px solid var(--neon-emerald)' : '1px solid rgba(255, 255, 255, 0.08)',
                         cursor: 'pointer',
                         transition: 'all 0.15s ease'
                       }}
                     >
-                      <div style={{ marginTop: '2px', color: isDone ? '#D9532F' : '#A3978B' }}>
+                      <div style={{ marginTop: '2px', color: isDone ? 'var(--neon-emerald)' : '#64748B' }}>
                         {isDone ? <CheckCircle2 size={18} /> : <Circle size={18} />}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: isDone ? '#D9532F' : '#1B1714', marginBottom: '2px' }}>
-                          Step {idx + 1}
+                        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: isDone ? 'var(--neon-emerald)' : '#FFFFFF', marginBottom: '2px' }}>
+                          Milestone {idx + 1}
                         </div>
-                        <div style={{ fontSize: '0.88rem', color: isDone ? '#7D7368' : '#2A231C', textDecoration: isDone ? 'line-through' : 'none' }}>
+                        <div style={{ fontSize: '0.88rem', color: isDone ? '#94A3B8' : '#E2E8F0', textDecoration: isDone ? 'line-through' : 'none' }}>
                           {step}
                         </div>
                       </div>
@@ -210,78 +212,101 @@ print("Ready to develop with DataSensei AI Teaching Agent guidance!")
 
           {activeTab === 'dataset' && (
             <div>
-              <div style={{ marginBottom: '14px' }}>
-                <strong style={{ fontSize: '1rem', color: '#1B1714' }}>{project.datasetName}</strong>
-                <span style={{ fontSize: '0.84rem', color: '#7D7368', marginLeft: '8px' }}>({project.datasetSize})</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+                <div style={{ fontSize: '0.92rem', color: '#FFFFFF', fontWeight: 600 }}>
+                  Raw Dataset Feed: {project.datasetName}
+                </div>
+                <span className="pill-tag" style={{ color: 'var(--neon-cyan)', borderColor: 'var(--neon-cyan)' }}>
+                  {project.datasetSize}
+                </span>
               </div>
 
-              <div style={{ overflowX: 'auto', borderRadius: '8px', border: '1px solid #ECE4DC', background: '#FFFFFF' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem', textAlign: 'left' }}>
-                  <thead>
-                    <tr style={{ background: '#F4ECE1', color: '#1B1714' }}>
-                      {Object.keys(project.sampleData[0] || {}).map(k => (
-                        <th key={k} style={{ padding: '10px 12px', borderBottom: '1px solid #ECE4DC' }}>{k}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {project.sampleData.map((row, rIdx) => (
-                      <tr key={rIdx} style={{ borderBottom: '1px solid #F0E8DF' }}>
-                        {Object.values(row).map((v, cIdx) => (
-                          <td key={cIdx} style={{ padding: '10px 12px', color: '#4A4137' }}>{String(v)}</td>
+              {project.sampleData && project.sampleData.length > 0 ? (
+                <div style={{ overflowX: 'auto' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem', fontFamily: 'var(--font-mono)' }}>
+                    <thead>
+                      <tr style={{ background: 'rgba(255, 255, 255, 0.05)', color: 'var(--neon-cyan)', textAlign: 'left' }}>
+                        {Object.keys(project.sampleData[0]).map((col) => (
+                          <th key={col} style={{ padding: '10px 12px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                            {col}
+                          </th>
                         ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {project.sampleData.map((row, idx) => (
+                        <tr key={idx} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)', color: '#CBD5E1' }}>
+                          {Object.values(row).map((val, cIdx) => (
+                            <td key={cIdx} style={{ padding: '8px 12px' }}>
+                              {String(val)}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p style={{ color: '#94A3B8' }}>Sample data schema available in live repository.</p>
+              )}
             </div>
           )}
 
           {activeTab === 'starter-code' && (
             <div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
-                <button onClick={copyCode} className="btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
-                  {copiedCode ? <Check size={14} color="#D9532F" /> : <Copy size={14} />}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <span style={{ fontSize: '0.84rem', color: '#94A3B8' }}>
+                  Production boilerplate with scikit-learn & XGBoost:
+                </span>
+                <button
+                  onClick={copyCode}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    border: '1px solid rgba(255, 255, 255, 0.12)',
+                    color: '#FFFFFF',
+                    borderRadius: '6px',
+                    padding: '4px 10px',
+                    fontSize: '0.76rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '5px'
+                  }}
+                >
+                  {copiedCode ? <Check size={13} color="var(--neon-emerald)" /> : <Copy size={13} />}
                   <span>{copiedCode ? 'Copied' : 'Copy'}</span>
                 </button>
               </div>
-              <pre style={{
-                background: '#1B1714',
-                color: '#FAF6F0',
-                padding: '16px',
-                borderRadius: '8px',
-                fontSize: '0.82rem',
-                fontFamily: 'var(--font-mono)',
-                overflowX: 'auto'
-              }}>
-                <code>{starterPythonCode}</code>
-              </pre>
+
+              <div className="code-block-container" style={{ maxHeight: '340px' }}>
+                <pre style={{ margin: 0 }}>
+                  <code>{starterPythonCode}</code>
+                </pre>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Footer */}
+        {/* Footer Actions */}
         <div style={{
-          padding: '16px 28px',
-          borderTop: '1px solid #ECE4DC',
+          padding: '18px 28px',
+          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+          background: 'rgba(12, 16, 28, 0.95)',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
-          background: '#FFFFFF'
+          justifyContent: 'space-between'
         }}>
-          <button onClick={onClose} className="btn-outline">
+          <button onClick={onClose} className="btn-cyber-outline">
             Close
           </button>
+
           <button
-            onClick={() => {
-              onClose();
-              onLaunchAgent(project);
-            }}
-            className="btn-terracotta"
+            onClick={() => onLaunchAgent(project)}
+            className="btn-neon-cyan"
+            style={{ padding: '11px 22px' }}
           >
             <Sparkles size={16} />
-            <span>Ask Teaching Agent for Custom Plan</span>
+            <span>Launch with AI Voice Agent</span>
           </button>
         </div>
       </div>

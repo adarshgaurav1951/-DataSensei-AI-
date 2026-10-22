@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host",
+    "backend": "python3 backend/server.py",
+    "dev:all": "python3 backend/server.py & vite --host",
     "build": "vite build",
     "preview": "vite preview --host"
   },

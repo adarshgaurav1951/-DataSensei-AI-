@@ -1,14 +1,15 @@
 import React from 'react';
-import { Bot, Sparkles, Terminal } from 'lucide-react';
+import { Bot, Sparkles, Terminal, Mic, Cpu, FlaskConical } from 'lucide-react';
 
-export default function Navbar({ onOpenAgent }) {
+export default function Navbar({ onOpenAgent, isSpeaking, isListening }) {
   const navLinks = [
-    { label: 'Live data', href: '#live-pipeline' },
-    { label: 'Industry work', href: '#industry-work' },
+    { label: 'Data Lab', href: '#data-lab' },
+    { label: 'Live Pipeline', href: '#live-pipeline' },
+    { label: 'Industry Tracks', href: '#industry-work' },
     { label: 'Projects', href: '#real-world-projects' },
-    { label: 'Skill path', href: '#skill-path' },
+    { label: 'Skill Path', href: '#skill-path' },
     { label: 'Tools', href: '#tools-platforms' },
-    { label: 'AI in dev', href: '#ai-in-dev' },
+    { label: 'AI in Dev', href: '#ai-in-dev' },
   ];
 
   const scrollTo = (e, id) => {
@@ -24,15 +25,15 @@ export default function Navbar({ onOpenAgent }) {
       position: 'sticky',
       top: 0,
       zIndex: 50,
-      background: 'rgba(250, 246, 240, 0.94)',
-      backdropFilter: 'blur(12px)',
-      borderBottom: '1px solid #ECE4DC'
+      background: 'rgba(7, 10, 18, 0.88)',
+      backdropFilter: 'blur(20px)',
+      borderBottom: '1px solid rgba(0, 240, 255, 0.15)'
     }}>
       <div className="container" style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '64px'
+        height: '68px'
       }}>
         {/* Brand / Logo */}
         <a 
@@ -40,75 +41,89 @@ export default function Navbar({ onOpenAgent }) {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
+            gap: '12px',
             textDecoration: 'none',
             color: 'inherit'
           }}
         >
           <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            background: '#D9532F',
+            width: '36px',
+            height: '36px',
+            borderRadius: '10px',
+            background: 'linear-gradient(135deg, #00F0FF 0%, #9D4EDD 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#FFFFFF'
+            color: '#040814',
+            boxShadow: '0 0 20px rgba(0, 240, 255, 0.5)'
           }}>
-            <Terminal size={18} strokeWidth={2.4} />
+            <Cpu size={20} strokeWidth={2.4} />
           </div>
-          <span style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '1.28rem',
-            fontWeight: 800,
-            letterSpacing: '-0.02em',
-            color: '#1B1714'
-          }}>
-            DataSensei<span style={{ color: '#D9532F' }}>.ai</span>
-          </span>
+          <div>
+            <span style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '1.32rem',
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              color: '#FFFFFF'
+            }}>
+              DataSensei<span style={{ color: 'var(--neon-cyan)' }}>.ai</span>
+            </span>
+            <span style={{
+              display: 'block',
+              fontSize: '0.66rem',
+              color: 'var(--neon-emerald)',
+              fontFamily: 'var(--font-mono)',
+              letterSpacing: '0.08em',
+              marginTop: '-2px'
+            }}>
+              DATA SCIENCE AGENT
+            </span>
+          </div>
         </a>
 
-        {/* Navigation Links matching the screenshot */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '22px' }}>
+        {/* Navigation Links */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
           {navLinks.map((item) => (
             <a
               key={item.label}
               href={item.href}
               onClick={(e) => scrollTo(e, item.href)}
               style={{
-                fontSize: '0.92rem',
-                color: '#3B332B',
+                fontSize: '0.90rem',
+                color: '#94A3B8',
                 fontWeight: 500,
                 textDecoration: 'none',
-                transition: 'color 0.15s ease'
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px'
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#D9532F')}
-              onMouseLeave={(e) => (e.target.style.color = '#3B332B')}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--neon-cyan)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#94A3B8';
+              }}
             >
-              {item.label}
+              {item.label === 'Data Lab' && <FlaskConical size={14} color="var(--neon-cyan)" />}
+              <span>{item.label}</span>
             </a>
           ))}
 
-          {/* Ask the agent link */}
+          {/* Voice Assistant Launch Button */}
           <button
             onClick={onOpenAgent}
+            className="btn-neon-cyan"
             style={{
-              background: 'none',
-              border: 'none',
-              color: '#D9532F',
-              fontSize: '0.92rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
-              borderRadius: '6px',
-              backgroundColor: '#FBECE7'
+              padding: '9px 18px',
+              borderRadius: '10px',
+              fontSize: '0.86rem',
+              boxShadow: (isSpeaking || isListening) ? '0 0 25px rgba(0, 240, 255, 0.6)' : 'none'
             }}
           >
-            <Sparkles size={15} />
-            <span>Ask the agent</span>
+            <Mic size={16} className={(isSpeaking || isListening) ? 'agent-aura-pulse' : ''} />
+            <span>Voice Agent</span>
           </button>
         </nav>
       </div>

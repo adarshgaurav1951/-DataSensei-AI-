@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SKILLS_16, PROJECTS_12 } from '../data/projectsData';
+import { Sparkles, Terminal, CheckCircle2, ArrowRight, Layers } from 'lucide-react';
 
 export default function SkillPathSection({ onOpenProject }) {
   const [selectedSkillIndex, setSelectedSkillIndex] = useState(0);
@@ -28,7 +29,7 @@ export default function SkillPathSection({ onOpenProject }) {
     {
       problem: 'Default chart designs with 10+ clashing colors and cluttered axes fail to convey insight to stakeholders.',
       how: 'Use minimal visual encodings: declutter gridlines, order bar categories by magnitude, and highlight key takeaways in terracotta.',
-      snippet: '# Clean sorted visual\ndf.groupby("category")["sales"].mean().sort_values().plot(kind="barh", color="#D9532F")'
+      snippet: '# Clean sorted visual\ndf.groupby("category")["sales"].mean().sort_values().plot(kind="barh", color="#00F0FF")'
     },
     {
       problem: 'Data scientists often deliver raw accuracy numbers without answering: "How much revenue or time did we save?"',
@@ -63,16 +64,16 @@ export default function SkillPathSection({ onOpenProject }) {
     {
       problem: 'Default matplotlib graphs require dozens of boilerplate lines and lack modern publication-ready styles.',
       how: 'Combine Seaborn facet grids with Matplotlib figure axes for customized distribution overlays (KDE + histogram).',
-      snippet: 'sns.displot(data=df, x="total_charges", hue="churn", kind="kde", fill=True, palette=["#3A322B", "#D9532F"])'
+      snippet: 'sns.displot(data=df, x="total_charges", hue="churn", kind="kde", fill=True, palette=["#101626", "#00F0FF"])'
     },
     {
       problem: 'Declaring a product change "better" based on a 1% conversion bump that is purely random chance noise.',
-      how: 'Perform two-tailed Z-tests and Student t-tests, verify p-values against significance threshold ($\alpha = 0.05$), and check statistical power.',
+      how: 'Perform two-tailed Z-tests and Student t-tests, verify p-values against significance threshold (α = 0.05), and check statistical power.',
       snippet: 'from scipy.stats import proportions_ztest\nstat, pval = proportions_ztest(count=[120, 155], nobs=[1000, 1000])\nprint(f"P-value: {pval:.4f} -> {\'Significant\' if pval < 0.05 else \'Not Significant\'}")'
     },
     {
       problem: 'Ignoring Bayes theorem and class priors results in the "base rate fallacy" in medical diagnosis and fraud detection.',
-      how: 'Model conditional probabilities $P(Fraud|Alert)$, evaluate Precision-Recall curves, and set classification thresholds accordingly.',
+      how: 'Model conditional probabilities P(Fraud|Alert), evaluate Precision-Recall curves, and set classification thresholds accordingly.',
       snippet: 'from sklearn.metrics import precision_recall_curve\nprec, rec, thresholds = precision_recall_curve(y_true, y_probs)\n# Choose threshold that maximizes F-beta score'
     },
     {
@@ -93,38 +94,50 @@ export default function SkillPathSection({ onOpenProject }) {
   const connectedProjects = PROJECTS_12.filter(p => p.skills.includes(currentSkill.name));
 
   return (
-    <section id="skill-path" style={{ padding: '60px 0' }}>
+    <section id="skill-path" style={{ padding: '80px 0 60px', position: 'relative' }}>
       <div className="container">
-        <h2 className="section-title">
-          Skill path
-        </h2>
-        <p className="section-subtitle">
-          The 16 skills from your roadmap. Tap one to see what problem it solves and how.
-        </p>
+        
+        {/* Header */}
+        <div style={{ marginBottom: '36px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <span className="pill-tag" style={{ background: 'rgba(0, 245, 160, 0.12)', borderColor: 'var(--neon-emerald)', color: 'var(--neon-emerald)' }}>
+              <Layers size={13} />
+              <span>16 CURATED COMPETENCY MODULES</span>
+            </span>
+          </div>
+
+          <h2 className="section-title">
+            Industry Skill Mastery Graph
+          </h2>
+          <p className="section-subtitle">
+            Inspect the 16 core competencies. Tap each skill node to view real-world failure modes, production solutions, and implementation code.
+          </p>
+        </div>
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '1.1fr 1.3fr',
+          gridTemplateColumns: '1.1fr 1.35fr',
           gap: '36px',
           alignItems: 'start'
         }}>
-          {/* Left: Vertical Dotted Line Timeline matching Image 4 */}
+          {/* Left: Vertical Timeline */}
           <div style={{
             position: 'relative',
             paddingLeft: '32px'
           }}>
-            {/* The Vertical Dotted Line */}
+            {/* The Vertical Glowing Line */}
             <div style={{
               position: 'absolute',
               left: '7px',
               top: '12px',
               bottom: '12px',
               width: '2px',
-              borderLeft: '2px dashed #D9532F'
+              background: 'linear-gradient(to bottom, var(--neon-cyan), var(--neon-violet), var(--neon-emerald))',
+              boxShadow: '0 0 10px rgba(0, 240, 255, 0.4)'
             }} />
 
             {/* List of 16 Skills */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
               {SKILLS_16.map((skill, idx) => {
                 const isSelected = idx === selectedSkillIndex;
                 return (
@@ -135,7 +148,8 @@ export default function SkillPathSection({ onOpenProject }) {
                       position: 'relative',
                       cursor: 'pointer',
                       display: 'flex',
-                      alignItems: 'center'
+                      alignItems: 'center',
+                      padding: '4px 0'
                     }}
                   >
                     {/* The Node Dot */}
@@ -145,20 +159,28 @@ export default function SkillPathSection({ onOpenProject }) {
                       width: '16px',
                       height: '16px',
                       borderRadius: '50%',
-                      background: '#D9532F',
-                      border: isSelected ? '3px solid #FAF6F0' : '2px solid #FAF6F0',
-                      boxShadow: isSelected ? '0 0 0 3px #D9532F' : 'none',
-                      transition: 'all 0.2s ease'
+                      background: isSelected ? 'var(--neon-cyan)' : '#1E293B',
+                      border: isSelected ? '3px solid #06080F' : '2px solid rgba(255, 255, 255, 0.2)',
+                      boxShadow: isSelected ? '0 0 15px var(--neon-cyan)' : 'none',
+                      transition: 'all 0.25s ease'
                     }} />
 
                     {/* Skill Text */}
                     <span style={{
-                      fontSize: '0.98rem',
+                      fontSize: '0.96rem',
                       fontWeight: isSelected ? 700 : 500,
-                      color: isSelected ? '#D9532F' : '#1B1714',
-                      transition: 'color 0.15s ease'
+                      color: isSelected ? 'var(--neon-cyan)' : '#94A3B8',
+                      transition: 'color 0.2s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
                     }}>
-                      {skill.name}
+                      <span>{skill.name}</span>
+                      {isSelected && (
+                        <span style={{ fontSize: '0.7rem', color: 'var(--neon-emerald)', fontFamily: 'var(--font-mono)' }}>
+                          [INSPECTING]
+                        </span>
+                      )}
                     </span>
                   </div>
                 );
@@ -167,70 +189,62 @@ export default function SkillPathSection({ onOpenProject }) {
           </div>
 
           {/* Right: Detailed "What problem it solves and how" Card */}
-          <div className="editorial-card" style={{ padding: '28px', position: 'sticky', top: '80px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-              <span className="pill-tag" style={{ background: '#FBECE7', color: '#D9532F', borderColor: '#D9532F', fontWeight: 600 }}>
+          <div className="cyber-card" style={{ padding: '28px', position: 'sticky', top: '90px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+              <span className="pill-tag" style={{ background: 'rgba(0, 240, 255, 0.12)', color: 'var(--neon-cyan)', borderColor: 'var(--neon-cyan)', fontWeight: 600 }}>
                 Skill #{selectedSkillIndex + 1} • {currentSkill.category}
               </span>
-              <span style={{ fontSize: '0.78rem', color: '#8A7E72' }}>
-                Tap list to inspect another
+              <span style={{ fontSize: '0.78rem', color: '#64748B', fontFamily: 'var(--font-mono)' }}>
+                SELECT ANY NODE
               </span>
             </div>
 
             <h3 style={{
-              fontFamily: 'var(--font-serif)',
               fontSize: '1.45rem',
-              fontWeight: 700,
-              color: '#1B1714',
+              fontWeight: 800,
+              color: '#FFFFFF',
               marginBottom: '18px'
             }}>
               {currentSkill.name}
             </h3>
 
             {/* Problem Section */}
-            <div style={{ marginBottom: '16px' }}>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: '#D9532F', marginBottom: '4px' }}>
-                What Problem It Solves:
+            <div style={{ marginBottom: '18px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--neon-coral)', marginBottom: '6px', fontFamily: 'var(--font-mono)' }}>
+                CRITICAL FAILURE MODE SOLVED:
               </div>
-              <p style={{ fontSize: '0.9rem', color: '#3B332B', lineHeight: '1.55' }}>
+              <p style={{ fontSize: '0.9rem', color: '#CBD5E1', lineHeight: '1.6', background: 'rgba(255, 94, 126, 0.05)', padding: '12px 14px', borderRadius: '10px', borderLeft: '3px solid var(--neon-coral)' }}>
                 {currentGuide.problem}
               </p>
             </div>
 
             {/* How It Works */}
-            <div style={{ marginBottom: '18px' }}>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: '#1B1714', marginBottom: '4px' }}>
-                How It Works in Production:
+            <div style={{ marginBottom: '20px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--neon-emerald)', marginBottom: '6px', fontFamily: 'var(--font-mono)' }}>
+                PRODUCTION METHODOLOGY:
               </div>
-              <p style={{ fontSize: '0.9rem', color: '#5A524A', lineHeight: '1.55' }}>
+              <p style={{ fontSize: '0.9rem', color: '#B8C7DE', lineHeight: '1.6' }}>
                 {currentGuide.how}
               </p>
             </div>
 
             {/* Code Snippet */}
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: '#8A7E72', marginBottom: '6px' }}>
-                Production Pattern:
+            <div style={{ marginBottom: '22px' }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--neon-cyan)', marginBottom: '6px', fontFamily: 'var(--font-mono)' }}>
+                PRODUCTION CODE IMPLEMENTATION:
               </div>
-              <pre style={{
-                background: '#F5EEE6',
-                border: '1px solid #E5DCD2',
-                borderRadius: '8px',
-                padding: '12px 14px',
-                fontSize: '0.82rem',
-                color: '#1B1714',
-                fontFamily: 'var(--font-mono)',
-                overflowX: 'auto'
-              }}>
-                <code>{currentGuide.snippet}</code>
-              </pre>
+              <div className="code-block-container">
+                <pre style={{ margin: 0 }}>
+                  <code>{currentGuide.snippet}</code>
+                </pre>
+              </div>
             </div>
 
             {/* Connected Projects */}
             {connectedProjects.length > 0 && (
-              <div style={{ borderTop: '1px solid #ECE4DC', paddingTop: '16px' }}>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1B1714', marginBottom: '8px' }}>
-                  Applied in Projects:
+              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '18px' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#FFFFFF', marginBottom: '10px' }}>
+                  Applied in Benchmark Projects:
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   {connectedProjects.map(p => (
@@ -238,9 +252,10 @@ export default function SkillPathSection({ onOpenProject }) {
                       key={p.id}
                       onClick={() => onOpenProject(p)}
                       className="pill-tag"
-                      style={{ cursor: 'pointer', background: '#FFFFFF', borderColor: '#D9532F', color: '#D9532F' }}
+                      style={{ cursor: 'pointer', background: 'rgba(0, 240, 255, 0.08)', borderColor: 'var(--neon-cyan)', color: 'var(--neon-cyan)' }}
                     >
-                      {p.title.split(' ')[0]} {p.title.split(' ')[1]} →
+                      <span>{p.title}</span>
+                      <ArrowRight size={12} />
                     </button>
                   ))}
                 </div>
